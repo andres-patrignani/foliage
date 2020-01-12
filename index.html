@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Foliage</title>
+        <link rel="stylesheet" href="public/css/bulma.min.css">
+        <link rel="stylesheet" href="public/css/custom.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    </head>
+    <body>
+
+
+        <!-- Progrss bar -->
+        <progress class="progress is-small is-primary" id="progressBar" value="0" max="100"></progress>
+
+        <!-- Navbar -->
+        <nav class="navbar is-fixed-top is-light">
+            <div id="navbarMenuHeroA" class="navbar-menu">
+                <div class="navbar-start">
+
+                    <div class="select">
+                        <select id="vegetationTypeList" onchange="getVegetationType();">
+                            <option value="empty">Foliage type </option>
+                            <option value="alfalfa">Alfalfa</option>
+                            <option value="barley">Barley</option>
+                            <option value="cover crop">Cover crop</option>
+                            <option value="grassland">Grassland</option>
+                            <option value="soybean">Soybean</option>
+                            <option value="sorghum">Sorghum</option>
+                            <option value="pasture">Pasture</option>
+                            <option value="other">Other</option>
+                            <option value="potatoes">Potatoes</option>
+                            <option value="rice">Rice</option>
+                            <option value="strawberry">Strawberry</option>
+                            <option value="turf">Turf</option>
+                            <option value="wheat">Wheat</option>
+                        </select>
+                    </div>
+
+                    <label class="button is-dark is-outlined is-light" id="btnUploadLabel" style="margin:5px;">
+                        <i class="fa fa-camera-retro fa-2x" aria-hidden="true"></i>
+                            <span class="is-hidden-mobile" style="padding-left: 10px;"><strong>Load images</strong></span>
+                    </label>
+                </div>
+                
+                <div class="navbar-end">
+                    <a class="button navbar-item" id="openAboutModalBtn">
+                        <i class="fa fa-info fa-fw" aria-hidden="true"></i>&nbsp; <span class="is-hidden-mobile">About
+                    </a>
+                    <a class="button navbar-item" href="https://dl.sciencesocieties.org/publications/aj/abstracts/107/6/2312" target="_blank">
+                        <i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp; <span class="is-hidden-mobile">Reference</span>
+                    </a>
+                    <a class="button navbar-item" href="https://scholar.google.com/scholar?cites=16734011246830097977&as_sdt=2005&sciodt=0,5&hl=en" target="_blank">
+                        <i class="fa fa-flask fa-fw" aria-hidden="true"></i>&nbsp; <span class="is-hidden-mobile">Research</span>
+                    </a>
+                    
+                    <a class="button navbar-item forum" href="forum.html" target="_blank">
+                        <i class="fa fa-users fa-fw" aria-hidden="true"></i>&nbsp;  <span class="is-hidden-mobile">Forum</span>
+                    </a>
+
+                    <a class="button navbar-item">
+                        <i class="fab fa-github fa-fw" aria-hidden="true"></i>&nbsp;  <span class="is-hidden-mobile">Github</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero is-fullheight" id="heroBanner">
+            <!-- Hero content: will be in the middle -->
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <figure>
+                        <img src="public/img/logo.png" class="align-center" style="width: calc(400px + 5vw); height: auto;"/>
+                    </figure>
+                    <h2 class="subtitle">
+                        <i>A minimalist web-based tool for batch analysis of green canopy cover.</i>
+                        <br/>
+                        <i>No downloads, no installation, and no accounts.</i>
+
+                    </h2>
+                    <br/>
+                </div>
+            </div>
+
+            <div class="hero-foot">
+                <p style="margin-left:10px">Version 1.0</p>
+            </div>
+        </section>
+
+        <!-- Results table -->
+        <div class="container" id="containerTable">
+            <table class="table is-bordered is-full-width" style="margin-top: 50px;" id="resultsTable" style="visibility:hidden;">
+                <tr>
+                    <th>#</th>
+                    <th>Original</th>
+                    <th>Classified</th>
+                    <th class="is-hidden-mobile">Vegetation</th> 
+                    <th class="is-hidden-mobile">Filename</th> 
+                    <th>Canopy cover</th>
+                    <th class="is-hidden-mobile">Latitude</th>
+                    <th class="is-hidden-mobile">Longitude</th>
+                    <th class="is-hidden-mobile">Altitude</th>
+                </tr>
+                <hr/>
+            </table>
+    
+            <button type="button" id="btnDownloadCSV" class="button is-link">Download CSV</button>
+            <button type="button" id="btnDownloadImg" class="button is-successfull">Download images</button>
+            <button type="button" id="btnDeleteTable" class="button is-danger is-pulled-right">Delete all images</button>
+
+        </div>
+
+        <!-- Modal -->
+        <div class="modal" id="aboutModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                <p class="modal-card-title">About</p>
+                <button class="delete" id="closeAboutModal" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <p>
+                        We are team that wants to help people in agriculture by developing decision-support tools that
+                        transcend the realm of academic research so that you can do something awesome with them.
+                        This project is possible due to the combined efforts of the Oklahoma State University Soil Physics and
+                        the Kansas State University Soil Water Processes research groups.
+                    </p>
+                    <br/>
+                    <p>
+                        Patrignani, A. and Ochsner, T.E., 2015. 
+                        Canopeo: A powerful new tool for measuring fractional green canopy cover. 
+                        Agronomy Journal, 107(6), pp.2312-2320.
+                    </p>
+                </section>
+
+                <!--
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button">Cancel</button>
+                </footer>
+                -->
+            </div>
+        </div>
+
+        <script src="public/js/FileSaver.js"></script>
+        <script src="public/js/jszip.min.js"></script>
+        <script src="public/js/exif.js"></script>
+        <script src="public/js/foliage_v1.0.js"></script>
+        <script src="public/libraries/p5/p5.min.js"></script>
+        <script src="public/libraries/p5/addons/p5.dom.min.js"></script>
+        <script>
+                ((window.gitter = {}).chat = {}).options = {
+                  room: 'foliageapp/community',
+                  activationElement: '.forum',
+                };
+        </script>
+        <script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+    </body>
+</html>

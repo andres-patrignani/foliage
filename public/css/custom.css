@@ -1,0 +1,46 @@
+.navbar{
+    height: 20px !important;
+}
+.navbar-item {
+    display: flex;
+}
+
+.navbar .button{
+    margin: 5px;
+    padding: 7px;
+}
+
+.navbar .select{
+    margin: 5px;
+}
+
+.navbar,
+.navbar-menu,
+.navbar-start,
+.navbar-end {
+    align-items: stretch;
+    display: flex;
+    padding: 0;
+}
+
+.navbar-menu{
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+.navbar-start{
+    justify-content: flex-start;
+    margin-right: auto;
+}
+.navbar-end{
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+
+.hero{
+   margin-top: -50px !important
+}
+
+#containerTable{
+    padding-bottom: 30px;
+}
