@@ -102,14 +102,14 @@ function setup() {
     });
 
     // Download Images button
-    btnDownloadImg = document.getElementById("btnDownloadImg")
-    btnDownloadImg.style.visibility = 'hidden';
-    btnDownloadImg.addEventListener("click", function(){
+    btnDownloadZIP = document.getElementById("btnDownloadZIP")
+    btnDownloadZIP.style.visibility = 'hidden';
+    btnDownloadZIP.addEventListener("click", function(){
         zip.generateAsync({type:"blob"})
         .then(function(content) {
             // need FileSaver.js
             //console.log(content)
-            saveAs(content, 'images_' + downloadTimestamp + '.zip');
+            saveAs(content, 'Foliage_' + downloadTimestamp + '.zip');
         });
     });
 
@@ -139,7 +139,7 @@ function gotFile(file) {
                     heroBanner.style.display = 'none';
                     containerTable.style.display = 'block';
                     btnDownloadCSV.style.visibility = 'visible';
-                    btnDownloadImg.style.visibility = 'visible';
+                    btnDownloadZIP.style.visibility = 'visible';
                 }
     
                 let imgOriginalId = 'img-original' + imgCounter; // Needed to call EXIF data
@@ -157,7 +157,9 @@ function gotFile(file) {
                 let altitudeCellId = 'altitude-cell' + imgCounter;
     
                 // Create table row
-                let tableRow = createElement('tr','<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + '<td '+ 'id="' + imgOriginalCellId + '"' +'></td>'+'<td '+ 'id="' + imgClassifiedCellId + '"' +'></td>' + '<td class="is-hidden-mobile" '+ 'id="' + vegetationTypeCellId + '"' + '>' + '<textarea rows="1" cols="15"></textarea>' + '</td>' + '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' + '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>').parent('resultsTable');    
+                let tableRow = createElement('tr','<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + '<td '+ 'id="' + imgOriginalCellId + '"' +'></td>'+'<td '+ 'id="' + imgClassifiedCellId + '"' +'></td>' + '<td class="is-hidden-mobile" '+ 'id="' + vegetationTypeCellId + '"' + '>' + '</td>' + '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' + '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>').parent('resultsTable');    
+                //let tableRow = createElement('tr','<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + '<td '+ 'id="' + imgOriginalCellId + '"' +'></td>'+'<td '+ 'id="' + imgClassifiedCellId + '"' +'></td>' + '<td class="is-hidden-mobile">' + '<textarea class="textarea" rows="1" id="' + vegetationTypeCellId + '"' + '></textarea>' + '</td>' + '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' + '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>').parent('resultsTable');    
+                //testcell.parentElement.parentElement.cells[0].innerText
 
                 // Get upload timestamp
                 uploadDate = new Date();
@@ -279,6 +281,7 @@ function gotFile(file) {
                 // Update HTML table
                 resultsTable.rows[imgCounter].cells[imgCounterCellId].innerHTML = imgCounter;
                 resultsTable.rows[imgCounter].cells[vegetationTypeCellId].innerHTML = vegetationType;
+                //document.getElementById(vegetationTypeCellId).innerText = vegetationType;
                 resultsTable.rows[imgCounter].cells[filenameCellId].innerHTML = file.name;
                 resultsTable.rows[imgCounter].cells[canopyCoverCellId].innerHTML = percentCanopyCover;
 
@@ -384,11 +387,11 @@ function getVegetationType(){
         if(vegetationType !== 'empty'){
             btnUpload.elt.disabled = false;
             btnUploadLabel.removeAttribute('disabled','')
-            document.getElementById('vegetationTypeRequireMsg').innerHTML = '';
+            //document.getElementById('vegetationTypeRequireMsg').innerHTML = '';
         } else {
             btnUploadLabel.setAttribute('disabled','')
             btnUpload.elt.disabled = true;
-            document.getElementById('vegetationTypeRequireMsg').innerHTML = 'Required field';
+            //document.getElementById('vegetationTypeRequireMsg').innerHTML = 'Required field';
         }
     }
 }
