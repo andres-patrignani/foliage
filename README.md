@@ -1,4 +1,5 @@
 # Foliage
+
 Web-based green canopy cover analysis tool. Version 1.0.
 
 Foliage is an open-source web-based application aimed at people that need to quantify green canopy cover from downward-facing digital images.
@@ -14,9 +15,11 @@ Foliage is an open-source web-based application aimed at people that need to qua
 * Drag and drop unlimited images from the local hard drive (beta)
 
 ---
+
 ## Future considerations
 
 * Add progress bar
+* Integrate with Dropbox Saver
 * Capture current geo-location
 * For specific crops calculate Normalize Difference Vegetation Index (NDVI) and canopy cover-based crop coeffients (Kcb)
 * Allow users to edit image table cells for individual images.
@@ -24,7 +27,7 @@ Foliage is an open-source web-based application aimed at people that need to qua
 
 ---
 
-## 
+## External packages
 
 This project would not be possible without the following projects and libraries:
 
