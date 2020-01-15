@@ -1,6 +1,7 @@
 // Foliage v 1.0
 // Author: Andres Patrignani
-// Date: 12-January-2020
+// Date created: 12-January-2020
+// Last updated: 14-January-2020
 // Contact e-mail: andrespatrignani@ksu.edu
 
 let imgOriginal;
@@ -47,6 +48,8 @@ var zip = new JSZip();
 var originals = zip.folder("originals");
 var classified = zip.folder("classified");
 var JSONdata = [];
+var fileNumber;
+
 
 function setup() {
     // Print software version
@@ -63,15 +66,18 @@ function setup() {
     resultsTable = document.getElementById('resultsTable');
 
     // Create table for storing images
-    table = new p5.Table();
-    table.addColumn('name');
-    table.addColumn('vegetationType');
-    table.addColumn('snapDate');
-    table.addColumn('uploadDate');
-    table.addColumn('latitude');
-    table.addColumn('longitude');
-    table.addColumn('altitude');
-    table.addColumn('canopyCover');
+    function initializeTable(){
+        table = new p5.Table();
+        table.addColumn('name');
+        table.addColumn('vegetationType');
+        table.addColumn('snapDate');
+        table.addColumn('uploadDate');
+        table.addColumn('latitude');
+        table.addColumn('longitude');
+        table.addColumn('altitude');
+        table.addColumn('canopyCover');
+    }
+    initializeTable()
 
     // Upload button
     btnUploadLabel = document.getElementById('btnUploadLabel');
@@ -123,227 +129,235 @@ function setup() {
 
 function gotFile(file) {
 
-    if(imgCounter <= 50){
-        if (file.type === 'image'){
-            loadImage(file.data,function(imgOriginal){
+    if (file.type === 'image'){
+        loadImage(file.data,function(imgOriginal){
 
-                // Get geographic coordinates
-                getLocation()
+            // Start counting images
+            imgCounter += 1;
 
-                // Start counting images
-                imgCounter += 1;
+            // Update progress bar
+            progressBar.value = str(round(imgCounter/btnUpload.elt.files.length*100));
 
-                // Make results table visible
-                if (imgCounter === 1){
-                    heroBanner.style.display = 'none';
-                    containerTable.style.display = 'block';
-                    btnDownloadCSV.style.visibility = 'visible';
-                    btnDownloadZIP.style.visibility = 'visible';
-                }
-    
-                let imgOriginalId = 'img-original' + imgCounter; // Needed to call EXIF data
-                let imgClassifiedId = 'img-classified' + imgCounter; // Not needed, but added for consistency with imgOriginal
-    
-                // Generate Id for table cells
-                let imgCounterCellId = 'img-counter-cell' + imgCounter;
-                let imgOriginalCellId = 'img-original-cell' + imgCounter; //'img-container'+imgCounter;
-                let imgClassifiedCellId = 'img-classified-cell' + imgCounter; //'img-container'+imgCounter;
-                let vegetationTypeCellId = 'vegetation-type-cell' + imgCounter;
-                let filenameCellId = 'filename-cell' + imgCounter;
-                let canopyCoverCellId = 'canopy-cover-cell' + imgCounter;
-                let latitudeCellId = 'latitude-cell' + imgCounter;
-                let longitudeCellId = 'longitude-cell' + imgCounter;
-                let altitudeCellId = 'altitude-cell' + imgCounter;
-    
-                // Create table row
-                let tableRow = createElement('tr','<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + '<td '+ 'id="' + imgOriginalCellId + '"' +'></td>'+'<td '+ 'id="' + imgClassifiedCellId + '"' +'></td>' + '<td class="is-hidden-mobile" '+ 'id="' + vegetationTypeCellId + '"' + '>' + '</td>' + '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' + '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>').parent('resultsTable');    
-                //let tableRow = createElement('tr','<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + '<td '+ 'id="' + imgOriginalCellId + '"' +'></td>'+'<td '+ 'id="' + imgClassifiedCellId + '"' +'></td>' + '<td class="is-hidden-mobile">' + '<textarea class="textarea" rows="1" id="' + vegetationTypeCellId + '"' + '></textarea>' + '</td>' + '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' + '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>').parent('resultsTable');    
-                //testcell.parentElement.parentElement.cells[0].innerText
 
-                // Get upload timestamp
-                uploadDate = new Date();
-                
-                // Resize image so that the largest side has 1440 pixels
-                if(imgOriginal.width>=imgOriginal.height){
-                    imgOriginal.resize(1440,0); 
-                } else {
-                    imgOriginal.resize(0,1440);
-                }
-                imgOriginal.loadPixels();
+            // Get geographic coordinates
+            getLocation()
 
-                // Initiatve classified image
-                imgClassified = createImage(imgOriginal.width,imgOriginal.height);
-                imgClassified.loadPixels();
+            // Make results table visible
+            if (imgCounter === 1){
+                heroBanner.style.display = 'none';
+                containerTable.style.display = 'block';
+                btnDownloadCSV.style.visibility = 'visible';
+                btnDownloadZIP.style.visibility = 'visible';
+            }
+
+            let imgOriginalId = 'img-original' + imgCounter; // Needed to call EXIF data
+            let imgClassifiedId = 'img-classified' + imgCounter; // Not needed, but added for consistency with imgOriginal
+
+            // Generate Id for table cells
+            let imgCounterCellId = 'img-counter-cell' + imgCounter;
+            let imgOriginalCellId = 'img-original-cell' + imgCounter; //'img-container'+imgCounter;
+            let imgClassifiedCellId = 'img-classified-cell' + imgCounter; //'img-container'+imgCounter;
+            let vegetationTypeCellId = 'vegetation-type-cell' + imgCounter;
+            let filenameCellId = 'filename-cell' + imgCounter;
+            let canopyCoverCellId = 'canopy-cover-cell' + imgCounter;
+            let latitudeCellId = 'latitude-cell' + imgCounter;
+            let longitudeCellId = 'longitude-cell' + imgCounter;
+            let altitudeCellId = 'altitude-cell' + imgCounter;
+
+            // Create table row
+            let tableRow = createElement('tr','<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + '<td '+ 'id="' + imgOriginalCellId + '"' +'></td>'+'<td '+ 'id="' + imgClassifiedCellId + '"' +'></td>' + '<td class="is-hidden-mobile" '+ 'id="' + vegetationTypeCellId + '"' + '>' + '</td>' + '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' + '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>').parent('resultsTable');    
+            //let tableRow = createElement('tr','<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + '<td '+ 'id="' + imgOriginalCellId + '"' +'></td>'+'<td '+ 'id="' + imgClassifiedCellId + '"' +'></td>' + '<td class="is-hidden-mobile">' + '<textarea class="textarea" rows="1" id="' + vegetationTypeCellId + '"' + '></textarea>' + '</td>' + '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' + '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>').parent('resultsTable');    
+            //testcell.parentElement.parentElement.cells[0].innerText
+
+            // Get upload timestamp
+            uploadDate = new Date();
             
-                // Classify image following manuscript settings
-                let RGratio = 0.95;
-                let RBratio = 0.95;
-                let canopyCover = 0;
-                for(let y=0; y<imgClassified.height; y++){
-                    for(let x=0; x<imgClassified.width; x++){
-                        let index = (x + y * imgClassified.width)*4;
-                    
-                        let R = float(imgOriginal.pixels[index+0]);
-                        let G = float(imgOriginal.pixels[index+1]);
-                        let B = float(imgOriginal.pixels[index+2]);
-                    
-                        if (R/G < RGratio && B/G < RBratio && 2*G-R-B>20){
-                            imgClassified.pixels[index+0] = 255;
-                            imgClassified.pixels[index+1] = 255;
-                            imgClassified.pixels[index+2] = 255;
-                            imgClassified.pixels[index+3] = 255;
-                            canopyCover += 1;
+            // Resize image so that the largest side has 1440 pixels
+            if(imgOriginal.width >= imgOriginal.height){
+                imgOriginal.resize(1440,0); 
+            } else {
+                imgOriginal.resize(0,1440);
+            }
+            imgOriginal.loadPixels();
 
-                        } else {
-                            imgClassified.pixels[index+0] = 0;
-                            imgClassified.pixels[index+1] = 0;
-                            imgClassified.pixels[index+2] = 0;
-                            imgClassified.pixels[index+3] = 255;
-                        }
+            // Initiatve classified image
+            imgClassified = createImage(imgOriginal.width, imgOriginal.height);
+            imgClassified.loadPixels();
+        
+            // Classify image following manuscript settings
+            let RGratio = 0.95;
+            let RBratio = 0.95;
+            let canopyCover = 0;
+            for(let y=0; y < imgClassified.height; y++){
+                for(let x=0; x < imgClassified.width; x++){
+                    let index = (x + y * imgClassified.width)*4;
+                
+                    let R = float(imgOriginal.pixels[index+0]);
+                    let G = float(imgOriginal.pixels[index+1]);
+                    let B = float(imgOriginal.pixels[index+2]);
+                
+                    if (R/G < RGratio && B/G < RBratio && 2*G-R-B>20){
+                        imgClassified.pixels[index+0] = 255;
+                        imgClassified.pixels[index+1] = 255;
+                        imgClassified.pixels[index+2] = 255;
+                        imgClassified.pixels[index+3] = 255;
+                        canopyCover += 1;
+
+                    } else {
+                        imgClassified.pixels[index+0] = 0;
+                        imgClassified.pixels[index+1] = 0;
+                        imgClassified.pixels[index+2] = 0;
+                        imgClassified.pixels[index+3] = 255;
                     }
                 }
-                imgClassified.updatePixels();
-                percentCanopyCover = round(canopyCover/(imgClassified.width * imgClassified.height)*1000)/10;
+            }
+            imgClassified.updatePixels();
+            percentCanopyCover = round(canopyCover/(imgClassified.width * imgClassified.height)*1000)/10;
 
-                // Calculate aspect ratio for thumbnails and resize images
-                var aspectRatio = imgClassified.width/imgClassified.height;
-                
-                // Thumbnail original image
-                thumbnailOriginal = createImg(file.data);
-                thumbnailOriginal.size(128*aspectRatio,128)
-                thumbnailOriginal.id(imgOriginalId)
-                thumbnailOriginal.parent(imgOriginalCellId)
-                
-                // Thumbnail classified image
-                thumbnailClassified = createImg(imgClassified.canvas.toDataURL());
-                thumbnailClassified.size(128*aspectRatio,128);
-                thumbnailClassified.id(imgClassifiedId);
-                thumbnailClassified.parent(imgClassifiedCellId);
-                thumbnailClassified.style.border = "5px solid black;"
+            // Calculate aspect ratio for thumbnails and resize images
+            var aspectRatio = imgClassified.width / imgClassified.height;
+            
+            // Thumbnail original image
+            thumbnailOriginal = createImg(file.data);
+            thumbnailOriginal.size(128*aspectRatio,128)
+            thumbnailOriginal.id(imgOriginalId)
+            thumbnailOriginal.parent(imgOriginalCellId)
+            thumbnailOriginal.addClass('zoom')
+            
+            // Thumbnail classified image
+            thumbnailClassified = createImg(imgClassified.canvas.toDataURL());
+            thumbnailClassified.size(128*aspectRatio,128);
+            thumbnailClassified.id(imgClassifiedId);
+            thumbnailClassified.parent(imgClassifiedCellId);
+            thumbnailClassified.style.border = "5px solid black;"
+            thumbnailClassified.addClass('zoom')
 
-                EXIF.getData(document.getElementById(imgOriginalId), function() {
-                    // var allMetaData = EXIF.getAllTags(this);
-                    // console.log(JSON.stringify(allMetaData, null, "\t"));
-                    snapDate = EXIF.getTag(this, "DateTime");
-                    latArray = EXIF.getTag(this, "GPSLatitude");
-                    latRef = EXIF.getTag(this, "GPSLatitudeRef")
-                    lonArray = EXIF.getTag(this, "GPSLongitude");
-                    lonRef = EXIF.getTag(this, "GPSLongitudeRef");
-                    altitude = EXIF.getTag(this, "GPSAltitude");
-                    altitudeRef = EXIF.getTag(this, "GPSAltitudeRef");
-                });
-
-                
-                // Check EXIF dateTime
-                if (typeof snapDate === 'undefined'){
-                    snapDate = null;
-                }
-
-                // Check EXIF latitude
-                if (typeof latArray === 'undefined'){
-                    latitude = null;
-                } else {
-                    latitude = degreeToDecimal(latArray[0],latArray[1],latArray[2],latRef);
-                }
-
-                // Check EXIF longitude
-                if (typeof lonArray === 'undefined'){
-                    longitude = null;
-                } else {
-                    longitude = degreeToDecimal(lonArray[0],lonArray[1],lonArray[2],lonRef);
-                }
-
-                // Check EXIF altitude
-                if (typeof altitude === 'undefined' || altitude === null){
-                    altitude = null;
-                } else {
-                    altitude = altitudeToMeters(altitude, altitudeRef) ;
-                }
-
-                // Replace any null values with realtime GPS data. Only replace if null to avoid overwriting
-                // EXIF data.
-                // Check real time latitude
-                // if (latitude === null){
-                //     latitude = realtimeLatitude;
-                // }
-
-                // Check real time latitude
-                // if (longitude === null){
-                //     longitude = realtimeLongitude;
-                // }
-                
-                // Check real time latitude
-                // if (altitude === null){
-                //     altitude = realtimeAltitude;
-                // }
-
-                // Update HTML table
-                // document.getElementById(imgCounterCellId).innerText = imgCounter;
-                // document.getElementById(vegetationTypeCellId).innerText = vegetationType;
-                // document.getElementById(filenameCellId).innerText = file.name;
-                // document.getElementById(canopyCoverCellId).innerText = percentCanopyCover;
-
-                resultsTable.rows[imgCounter].cells[imgCounterCellId].innerText = imgCounter;
-                resultsTable.rows[imgCounter].cells[vegetationTypeCellId].innerText = vegetationType;
-                resultsTable.rows[imgCounter].cells[filenameCellId].innerText = file.name;
-                resultsTable.rows[imgCounter].cells[canopyCoverCellId].innerText = percentCanopyCover;
-
-                if(latitude === null){
-                    resultsTable.rows[imgCounter].cells[latitudeCellId].innerHTML = 'Unknown';
-                } else {
-                    resultsTable.rows[imgCounter].cells[latitudeCellId].innerHTML = latitude;
-                }
-
-                if(longitude === null){
-                    resultsTable.rows[imgCounter].cells[longitudeCellId].innerHTML = 'Unknown';
-                } else {
-                    resultsTable.rows[imgCounter].cells[longitudeCellId].innerHTML = longitude;
-                }
-
-                if(altitude === null){
-                    resultsTable.rows[imgCounter].cells[altitudeCellId].innerHTML = 'Unknown';
-                } else {
-                    resultsTable.rows[imgCounter].cells[altitudeCellId].innerHTML = altitude;
-                }
-
-                
-                // Append to output table
-                var newRow = table.addRow();
-                newRow.set('name', file.name);
-                newRow.set('vegetationType', vegetationType);
-                newRow.set('snapDate', snapDate);
-                newRow.set('uploadDate', uploadDate.toString()); // For downloadable file write date on a human readable format
-                newRow.set('latitude', latitude);
-                newRow.set('longitude', longitude);
-                newRow.set('altitude', altitude);
-                newRow.set('canopyCover', percentCanopyCover);
-
-                var imgName = 'img_' + uploadDate.getTime();
-                JSONdata.push({
-                    name: imgName,
-                    snapDate: snapDate,
-                    uploadDate: uploadDate.getTime(),
-                    latitude: latitude,
-                    longitude: longitude,
-                    altitude: altitude,
-                    cover: percentCanopyCover,
-                    vegetationType: vegetationType,
-                    country: country,
-                    state: state,
-                    region: region
-                });
-                
-                // Add original and classified images to ZIP file
-                originals.file(imgName + '.jpg', dataURItoBlob(imgOriginal.canvas.toDataURL('image/jpeg')), {base64: true});
-                classified.file(imgName + '.jpg', dataURItoBlob(imgClassified.canvas.toDataURL('image/jpeg')), {base64: true});
+            EXIF.getData(document.getElementById(imgOriginalId), function() {
+                // var allMetaData = EXIF.getAllTags(this);
+                // console.log(JSON.stringify(allMetaData, null, "\t"));
+                snapDate = EXIF.getTag(this, "DateTime");
+                latArray = EXIF.getTag(this, "GPSLatitude");
+                latRef = EXIF.getTag(this, "GPSLatitudeRef")
+                lonArray = EXIF.getTag(this, "GPSLongitude");
+                lonRef = EXIF.getTag(this, "GPSLongitudeRef");
+                altitude = EXIF.getTag(this, "GPSAltitude");
+                altitudeRef = EXIF.getTag(this, "GPSAltitudeRef");
             });
-        }
+
+            
+            // Check EXIF dateTime
+            if (typeof snapDate === 'undefined'){
+                snapDate = null;
+            }
+
+            // Check EXIF latitude
+            if (typeof latArray === 'undefined'){
+                latitude = null;
+            } else {
+                latitude = degreeToDecimal(latArray[0],latArray[1],latArray[2],latRef);
+            }
+
+            // Check EXIF longitude
+            if (typeof lonArray === 'undefined'){
+                longitude = null;
+            } else {
+                longitude = degreeToDecimal(lonArray[0],lonArray[1],lonArray[2],lonRef);
+            }
+
+            // Check EXIF altitude
+            if (typeof altitude === 'undefined' || altitude === null){
+                altitude = null;
+            } else {
+                altitude = altitudeToMeters(altitude, altitudeRef) ;
+            }
+
+            // Replace any null values with realtime GPS data. Only replace if null to avoid overwriting
+            // EXIF data.
+            // Check real time latitude
+            // if (latitude === null){
+            //     latitude = realtimeLatitude;
+            // }
+
+            // Check real time latitude
+            // if (longitude === null){
+            //     longitude = realtimeLongitude;
+            // }
+            
+            // Check real time latitude
+            // if (altitude === null){
+            //     altitude = realtimeAltitude;
+            // }
+
+            // Update HTML table
+            // document.getElementById(imgCounterCellId).innerText = imgCounter;
+            // document.getElementById(vegetationTypeCellId).innerText = vegetationType;
+            // document.getElementById(filenameCellId).innerText = file.name;
+            // document.getElementById(canopyCoverCellId).innerText = percentCanopyCover;
+
+            resultsTable.rows[imgCounter].cells[imgCounterCellId].innerText = imgCounter;
+            resultsTable.rows[imgCounter].cells[vegetationTypeCellId].innerText = vegetationType;
+            resultsTable.rows[imgCounter].cells[filenameCellId].innerText = file.name;
+            resultsTable.rows[imgCounter].cells[canopyCoverCellId].innerText = percentCanopyCover;
+
+            if(latitude === null){
+                resultsTable.rows[imgCounter].cells[latitudeCellId].innerHTML = 'Unknown';
+            } else {
+                resultsTable.rows[imgCounter].cells[latitudeCellId].innerHTML = latitude;
+            }
+
+            if(longitude === null){
+                resultsTable.rows[imgCounter].cells[longitudeCellId].innerHTML = 'Unknown';
+            } else {
+                resultsTable.rows[imgCounter].cells[longitudeCellId].innerHTML = longitude;
+            }
+
+            if(altitude === null){
+                resultsTable.rows[imgCounter].cells[altitudeCellId].innerHTML = 'Unknown';
+            } else {
+                resultsTable.rows[imgCounter].cells[altitudeCellId].innerHTML = altitude;
+            }
+
+            
+            // Append to output table
+            var newRow = table.addRow();
+            newRow.set('name', file.name);
+            newRow.set('vegetationType', vegetationType);
+            newRow.set('snapDate', snapDate);
+            newRow.set('uploadDate', uploadDate.toString()); // For downloadable file write date on a human readable format
+            newRow.set('latitude', latitude);
+            newRow.set('longitude', longitude);
+            newRow.set('altitude', altitude);
+            newRow.set('canopyCover', percentCanopyCover);
+
+            JSONdata.push({
+                name: file.name,
+                snapDate: snapDate,
+                uploadDate: uploadDate.getTime(),
+                latitude: latitude,
+                longitude: longitude,
+                altitude: altitude,
+                cover: percentCanopyCover,
+                vegetationType: vegetationType
+                //country: country,
+                //state: state,
+                //region: region
+            });
+            
+            // Add original and classified images to ZIP file
+            originals.file(file.name + '.jpg', dataURItoBlob(imgOriginal.canvas.toDataURL('image/jpeg')), {base64: true});
+            classified.file(file.name + '.jpg', dataURItoBlob(imgClassified.canvas.toDataURL('image/jpeg')), {base64: true});
+        });
     }
+    setTimeout(function(){}, 100);
+
 }
+
 
 function deleteTable(){
     containerTable.remove();
     heroBanner.style.display = 'flex';
+    progressBar.value = 0;
+    location.reload(false)
 }
 
 
