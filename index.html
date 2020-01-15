@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="has-navbar-fixed-top">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -11,59 +11,75 @@
     </head>
     <body>
 
-
-        <!-- Progrss bar -->
-        <progress class="progress is-small is-primary" id="progressBar" value="0" max="100"></progress>
-
         <!-- Navbar -->
-        <nav class="navbar is-fixed-top is-light">
-            <div id="navbarMenuHeroA" class="navbar-menu">
-                <div class="navbar-start">
+        <nav class="navbar is-light is-fixed-top">
+            <div class="container">
 
-                    <div class="select">
-                        <select id="vegetationTypeList" onchange="getVegetationType();">
-                            <option value="empty">Foliage type </option>
-                            <option value="alfalfa">Alfalfa</option>
-                            <option value="barley">Barley</option>
-                            <option value="cover crop">Cover crop</option>
-                            <option value="grassland">Grassland</option>
-                            <option value="soybean">Soybean</option>
-                            <option value="sorghum">Sorghum</option>
-                            <option value="pasture">Pasture</option>
-                            <option value="other">Other</option>
-                            <option value="potatoes">Potatoes</option>
-                            <option value="rice">Rice</option>
-                            <option value="strawberry">Strawberry</option>
-                            <option value="turf">Turf</option>
-                            <option value="spring wheat">Spring wheat</option>
-                            <option value="winter wheat">Winter wheat</option>
+            <div class="navbar-brand">
 
-                        </select>
-                    </div>
 
-                    <label class="button is-dark is-outlined is-light" id="btnUploadLabel" style="margin:5px;">
-                        <i class="fa fa-camera-retro fa-2x" aria-hidden="true"></i>
-                            <span class="is-hidden-mobile" style="padding-left: 10px;"><strong>Load images</strong></span>
-                    </label>
+                <div class="select">
+                    <select id="vegetationTypeList" onchange="getVegetationType();">
+                        <option value="empty">Foliage type </option>
+                        <option value="alfalfa">Alfalfa</option>
+                        <option value="barley">Barley</option>
+                        <option value="cover crop">Cover crop</option>
+                        <option value="grassland">Grassland</option>
+                        <option value="soybean">Soybean</option>
+                        <option value="sorghum">Sorghum</option>
+                        <option value="pasture">Pasture</option>
+                        <option value="other">Other</option>
+                        <option value="potatoes">Potatoes</option>
+                        <option value="rice">Rice</option>
+                        <option value="strawberry">Strawberry</option>
+                        <option value="turf">Turf</option>
+                        <option value="spring wheat">Spring wheat</option>
+                        <option value="winter wheat">Winter wheat</option>
+                    </select>
                 </div>
-                
-                <div class="navbar-end">
-                    <a class="button navbar-item" id="openAboutModalBtn">
-                        <i class="fas fa-info" aria-hidden="true"></i>&nbsp; <span class="is-hidden-mobile">About
-                    </a>
-                    <a class="button navbar-item" href="https://dl.sciencesocieties.org/publications/aj/abstracts/107/6/2312" target="_blank">
-                        <i class="fas fa-book" aria-hidden="true"></i>&nbsp; <span class="is-hidden-mobile">Reference</span>
-                    </a>   
-                    <a class="button navbar-item forum" href="forum.html" target="_blank">
-                        <i class="fas fa-users" aria-hidden="true"></i>&nbsp;  <span class="is-hidden-mobile">Forum</span>
-                    </a>
+                <label class="button is-dark is-outlined is-light" id="btnUploadLabel" style="margin:5px;">
+                    <i class="fa fa-camera-retro fa-2x" aria-hidden="true"></i>
+                        <span class="is-hidden-mobile" style="padding-left: 10px;"><strong>Load images</strong></span>
+                </label>
+                <span class="navbar-burger burger" data-target="navMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+                </span>
 
-                    <a class="button navbar-item">
-                        <i class="fab fa-github" aria-hidden="true"></i>&nbsp;  <span class="is-hidden-mobile">Github</span>
-                    </a>
+            </div>
+
+            <div id="navMenu" class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-start">
+                        <a class="navbar-item" id="openAboutModalBtn">
+                            <span class="icon"><i class="fas fa-info"></i></span><span>About</span>
+                        </a>
+                        <a class="navbar-item" href="https://dl.sciencesocieties.org/publications/aj/abstracts/107/6/2312" target="_blank">
+                            <span class="icon"><i class="fas fa-book"></i></span><span>Reference</span>
+                        </a>   
+                        <a class="navbar-item forum" href="forum.html" target="_blank">
+                            <span class="icon"><i class="fas fa-users"></i></span><span>Forum</span>
+                        </a>
+                        <a class="navbar-item" href="https://github.com/andres-patrignani/foliage">
+                            <span class="icon"><i class="fab fa-github"></i></span><span>Github</span>
+                        </a>
+                    </div>
                 </div>
             </div>
+
+            <div class="navbar-end">
+               
+
+
+            </div>
+
+
+            </div>
         </nav>
+
+        <!-- Progrss bar -->
+        <progress class="progress is-small is-primary is-radiusless" id="progressBar" value="" max="100"></progress>
 
         <section class="hero is-fullheight" id="heroBanner">
             <!-- Hero content: will be in the middle -->
@@ -73,7 +89,7 @@
                         <img src="public/img/logo.png" class="align-center" style="width: calc(350px + 5vw); height: auto;"/>
                     </figure>
                     <h2 class="subtitle">
-                        <i>A minimalist web-based tool for batch analysis of green canopy cover.</i>
+                        <i>A minimalist tool for batch image processing of green canopy cover.</i>
                     </h2>
                     <br/>
                 </div>
@@ -93,7 +109,7 @@
                     <th>Classified</th>
                     <th class="is-hidden-mobile">Vegetation</th> 
                     <th class="is-hidden-mobile">Filename</th> 
-                    <th>Canopy cover</th>
+                    <th>Canopy cover (%)</th>
                     <th class="is-hidden-mobile">Latitude</th>
                     <th class="is-hidden-mobile">Longitude</th>
                     <th class="is-hidden-mobile">Altitude</th>
@@ -138,7 +154,7 @@
 
                     <h3 class="subtitle">Privacy and image metadata</h3>
                     <p>
-                    Foliage access metadata already present in the uploaded images. This includes basic attributes such as 
+                    Foliage retrieves metadata already present in the uploaded images. This includes basic attributes such as 
                     image name, image dimensions, image file size, and pixel colors. These attributes are used to populate the table and classify 
                     the green canopy cover. More advanced attributes such as geographic coordinates are only accessed if they are available in the image metadata. 
                     For instance, if you load a picture that you took a month ago while having the GPS disabled, then Foliage will not have access to that 
@@ -196,5 +212,16 @@
         </script>
         <script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
 
+        <script>
+        (function() {
+            var burger = document.querySelector('.burger');
+            var nav = document.querySelector('#'+burger.dataset.target);
+           
+            burger.addEventListener('click', function(){
+              burger.classList.toggle('is-active');
+              nav.classList.toggle('is-active');
+            });
+          })();
+        </script>
     </body>
 </html>
