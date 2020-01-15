@@ -14,67 +14,57 @@
         <!-- Navbar -->
         <nav class="navbar is-light is-fixed-top">
             <div class="container">
+                <div class="navbar-brand">
+                    <div class="select">
+                        <select id="vegetationTypeList" onchange="getVegetationType();">
+                            <option value="empty">Foliage type </option>
+                            <option value="alfalfa">Alfalfa</option>
+                            <option value="barley">Barley</option>
+                            <option value="cover crop">Cover crop</option>
+                            <option value="grassland">Grassland</option>
+                            <option value="soybean">Soybean</option>
+                            <option value="sorghum">Sorghum</option>
+                            <option value="pasture">Pasture</option>
+                            <option value="other">Other</option>
+                            <option value="potatoes">Potatoes</option>
+                            <option value="rice">Rice</option>
+                            <option value="strawberry">Strawberry</option>
+                            <option value="turf">Turf</option>
+                            <option value="spring wheat">Spring wheat</option>
+                            <option value="winter wheat">Winter wheat</option>
+                        </select>
+                    </div>
 
-            <div class="navbar-brand">
+                    <label class="button is-dark is-outlined is-light" id="btnUploadLabel" style="margin:5px;" disabled>
+                        <i class="fa fa-camera-retro fa-2x" aria-hidden="true"></i>
+                            <span class="is-hidden-mobile" style="padding-left: 10px;"><strong>Load images</strong></span>
+                    </label>
 
-
-                <div class="select">
-                    <select id="vegetationTypeList" onchange="getVegetationType();">
-                        <option value="empty">Foliage type </option>
-                        <option value="alfalfa">Alfalfa</option>
-                        <option value="barley">Barley</option>
-                        <option value="cover crop">Cover crop</option>
-                        <option value="grassland">Grassland</option>
-                        <option value="soybean">Soybean</option>
-                        <option value="sorghum">Sorghum</option>
-                        <option value="pasture">Pasture</option>
-                        <option value="other">Other</option>
-                        <option value="potatoes">Potatoes</option>
-                        <option value="rice">Rice</option>
-                        <option value="strawberry">Strawberry</option>
-                        <option value="turf">Turf</option>
-                        <option value="spring wheat">Spring wheat</option>
-                        <option value="winter wheat">Winter wheat</option>
-                    </select>
+                    <span class="navbar-burger burger" data-target="navMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    </span>
                 </div>
-                <label class="button is-dark is-outlined is-light" id="btnUploadLabel" style="margin:5px;">
-                    <i class="fa fa-camera-retro fa-2x" aria-hidden="true"></i>
-                        <span class="is-hidden-mobile" style="padding-left: 10px;"><strong>Load images</strong></span>
-                </label>
-                <span class="navbar-burger burger" data-target="navMenu">
-                <span></span>
-                <span></span>
-                <span></span>
-                </span>
 
-            </div>
-
-            <div id="navMenu" class="navbar-menu">
-                <div class="navbar-end">
-                    <div class="navbar-start">
-                        <a class="navbar-item" id="openAboutModalBtn">
-                            <span class="icon"><i class="fas fa-info"></i></span><span>About</span>
-                        </a>
-                        <a class="navbar-item" href="https://dl.sciencesocieties.org/publications/aj/abstracts/107/6/2312" target="_blank">
-                            <span class="icon"><i class="fas fa-book"></i></span><span>Reference</span>
-                        </a>   
-                        <a class="navbar-item forum" href="forum.html" target="_blank">
-                            <span class="icon"><i class="fas fa-users"></i></span><span>Forum</span>
-                        </a>
-                        <a class="navbar-item" href="https://github.com/andres-patrignani/foliage">
-                            <span class="icon"><i class="fab fa-github"></i></span><span>Github</span>
-                        </a>
+                <div id="navMenu" class="navbar-menu">
+                    <div class="navbar-end">
+                        <div class="navbar-start">
+                            <a class="navbar-item" id="openAboutModalBtn">
+                                <span class="icon"><i class="fas fa-info"></i></span><span>About</span>
+                            </a>
+                            <a class="navbar-item" href="https://dl.sciencesocieties.org/publications/aj/abstracts/107/6/2312" target="_blank">
+                                <span class="icon"><i class="fas fa-book"></i></span><span>Reference</span>
+                            </a>   
+                            <a class="navbar-item forum" href="forum.html" target="_blank">
+                                <span class="icon"><i class="fas fa-users"></i></span><span>Forum</span>
+                            </a>
+                            <a class="navbar-item" href="https://github.com/andres-patrignani/foliage">
+                                <span class="icon"><i class="fab fa-github"></i></span><span>Github</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="navbar-end">
-               
-
-
-            </div>
-
-
             </div>
         </nav>
 
@@ -188,13 +178,6 @@
                         </a>
                     </p>
                 </section>
-
-                <!--
-                <footer class="modal-card-foot">
-                    <button class="button is-success">Save changes</button>
-                    <button class="button">Cancel</button>
-                </footer>
-                -->
             </div>
         </div>
 
