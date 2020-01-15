@@ -14,33 +14,15 @@
     margin: 5px;
 }
 
-.navbar,
-.navbar-menu,
-.navbar-start,
-.navbar-end {
-    align-items: stretch;
-    display: flex;
-    padding: 0;
-}
-
-.navbar-menu{
-    flex-grow: 1;
-    flex-shrink: 0;
-}
-.navbar-start{
-    justify-content: flex-start;
-    margin-right: auto;
-}
-.navbar-end{
-    justify-content: flex-end;
-    margin-left: auto;
-}
-
-
 .hero{
    margin-top: -50px !important
 }
 
 #containerTable{
     padding-bottom: 30px;
+}
+
+table{
+    margin-top: 75px;
+    width: 100% !important;
 }

@@ -39,8 +39,6 @@ var region;
 var vegetationType;
 var dateTime;
 
-
-//var userDatabaseRef;
 var imgOriginalsRef;
 var imgClassifiedRef;
 var storageRef;
@@ -48,7 +46,7 @@ var user;
 var zip = new JSZip();
 var originals = zip.folder("originals");
 var classified = zip.folder("classified");
-
+var JSONdata = [];
 
 function setup() {
     // Print software version
@@ -105,6 +103,7 @@ function setup() {
     btnDownloadZIP = document.getElementById("btnDownloadZIP")
     btnDownloadZIP.style.visibility = 'hidden';
     btnDownloadZIP.addEventListener("click", function(){
+        zip.file('data_' + downloadTimestamp.getTime() + '.json', JSON.stringify(JSONdata))
         zip.generateAsync({type:"blob"})
         .then(function(content) {
             // need FileSaver.js
@@ -146,7 +145,7 @@ function gotFile(file) {
                 let imgClassifiedId = 'img-classified' + imgCounter; // Not needed, but added for consistency with imgOriginal
     
                 // Generate Id for table cells
-                let imgCounterCellId = 'img-counter-cell';
+                let imgCounterCellId = 'img-counter-cell' + imgCounter;
                 let imgOriginalCellId = 'img-original-cell' + imgCounter; //'img-container'+imgCounter;
                 let imgClassifiedCellId = 'img-classified-cell' + imgCounter; //'img-container'+imgCounter;
                 let vegetationTypeCellId = 'vegetation-type-cell' + imgCounter;
@@ -279,11 +278,15 @@ function gotFile(file) {
                 // }
 
                 // Update HTML table
-                resultsTable.rows[imgCounter].cells[imgCounterCellId].innerHTML = imgCounter;
-                resultsTable.rows[imgCounter].cells[vegetationTypeCellId].innerHTML = vegetationType;
-                //document.getElementById(vegetationTypeCellId).innerText = vegetationType;
-                resultsTable.rows[imgCounter].cells[filenameCellId].innerHTML = file.name;
-                resultsTable.rows[imgCounter].cells[canopyCoverCellId].innerHTML = percentCanopyCover;
+                // document.getElementById(imgCounterCellId).innerText = imgCounter;
+                // document.getElementById(vegetationTypeCellId).innerText = vegetationType;
+                // document.getElementById(filenameCellId).innerText = file.name;
+                // document.getElementById(canopyCoverCellId).innerText = percentCanopyCover;
+
+                resultsTable.rows[imgCounter].cells[imgCounterCellId].innerText = imgCounter;
+                resultsTable.rows[imgCounter].cells[vegetationTypeCellId].innerText = vegetationType;
+                resultsTable.rows[imgCounter].cells[filenameCellId].innerText = file.name;
+                resultsTable.rows[imgCounter].cells[canopyCoverCellId].innerText = percentCanopyCover;
 
                 if(latitude === null){
                     resultsTable.rows[imgCounter].cells[latitudeCellId].innerHTML = 'Unknown';
@@ -316,7 +319,7 @@ function gotFile(file) {
                 newRow.set('canopyCover', percentCanopyCover);
 
                 var imgName = 'img_' + uploadDate.getTime();
-                var data = {
+                JSONdata.push({
                     name: imgName,
                     snapDate: snapDate,
                     uploadDate: uploadDate.getTime(),
@@ -328,7 +331,7 @@ function gotFile(file) {
                     country: country,
                     state: state,
                     region: region
-                };
+                });
                 
                 // Add original and classified images to ZIP file
                 originals.file(imgName + '.jpg', dataURItoBlob(imgOriginal.canvas.toDataURL('image/jpeg')), {base64: true});
