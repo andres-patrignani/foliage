@@ -81,7 +81,6 @@ function setup() {
 
     // Upload button
     btnUploadLabel = document.getElementById('btnUploadLabel');
-    btnUploadLabel.setAttribute('disabled','')
 
     btnUpload = createFileInput(gotFile,'multiple');
     btnUpload.parent('btnUploadLabel');
