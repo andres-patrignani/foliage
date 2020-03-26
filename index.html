@@ -56,9 +56,6 @@
                             <a class="navbar-item" href="https://dl.sciencesocieties.org/publications/aj/abstracts/107/6/2312" target="_blank">
                                 <span class="icon"><i class="fas fa-book"></i></span><span>Reference</span>
                             </a>   
-                            <a class="navbar-item forum" href="forum.html" target="_blank">
-                                <span class="icon"><i class="fas fa-users"></i></span><span>Forum</span>
-                            </a>
                             <a class="navbar-item" href="https://github.com/andres-patrignani/foliage" target="_blank">
                                 <span class="icon"><i class="fab fa-github"></i></span><span>Github</span>
                             </a>
@@ -74,7 +71,7 @@
         <section class="hero is-fullheight" id="heroBanner">
             <!-- Hero content: will be in the middle -->
             <div class="hero-body">
-                <div class="container has-text-centered">
+                <div class="container has-text-centered" style="margin-top:50px;">
                     <figure>
                         <img src="public/img/logo.png" class="align-center" style="width: calc(350px + 5vw); height: auto;"/>
                     </figure>
@@ -99,9 +96,9 @@
                     <th>Classified</th>
                     <th class="is-hidden-mobile">Vegetation</th> 
                     <th class="is-hidden-mobile">Filename</th> 
-                    <th>Canopy cover (%)</th>
-                    <th class="is-hidden-mobile">Latitude</th>
-                    <th class="is-hidden-mobile">Longitude</th>
+                    <th>Cover (%)</th>
+                    <th>Lat</th>
+                    <th>Lon</th>
                     <th class="is-hidden-mobile">Altitude</th>
                 </tr>
             </table>
@@ -131,15 +128,25 @@
                 <section class="modal-card-body">
 
                     <p>
-                        Foliage is a light-weight web-application for analyzing green canopy cover. Foliage is a spin-off from the Canopeo application. It uses the same
-                        algorithm to classify green canopy cover, but Foliage serves a different purpose and audience.
-                        Foliage gives end users the possibility to analyze batches of digital images without the need for downloading and installing software or signing a new account.
+                        Foliage is a light-weight web-application for analyzing green canopy cover.
+                    </p>
+                    <br/>
+                    <p>
+                        Foliage is a spin-off from the Canopeo application and uses the same algorithm to classify green canopy cover, but Foliage serves a different purpose and audience.
+                        Foliage gives end users the possibility to analyze batches of digital images without the need for downloading and installing software or signing in for a new account.
                         This means that anyone can start analyzing images right away and that end users always have access to the latest version of Foliage web-app.
                     </p>
-                    <p>Foliage was developed and is maintained by Andres Patrignani. If you want to get involved or you simply want to share comments and feedback, 
-                        please send me an e-mail at: andrespatrignani@ksu.edu
-                    </p>
 
+                    <br/>
+
+                    <h3 class="subtitle">Feedback</h3>
+                    <p> 
+                        For making feature requests and reporting errors, please open an issue in the <a href="https://github.com/andres-patrignani/foliage" >Github repository</a>
+                    </p>
+                    <br/>
+                    <p>
+                        For comments or discussion about research projects, please contact Andres Patrignani at: andrespatrignani@ksu.edu
+                    </p>
                     <br/>
 
                     <h3 class="subtitle">Privacy and image metadata</h3>
@@ -147,8 +154,8 @@
                     Foliage retrieves metadata already present in the uploaded images. This includes basic attributes such as 
                     image name, image dimensions, image file size, and pixel colors. These attributes are used to populate the table and classify 
                     the green canopy cover. More advanced attributes such as geographic coordinates are only accessed if they are available in the image metadata. 
-                    For instance, if you load a picture that you took a month ago while having the GPS disabled, then Foliage will not have access to that 
-                    information and will populate the table field with "Unknown". If the uploaded images contain geo-referenced data, 
+                    For instance, if you upload a picture that you took a month ago while having the GPS disabled, then Foliage will not have access to that 
+                    information and will populate the table field with a placeholder value "Unknown". If the uploaded images contain geo-referenced data, 
                     then Foliage will try to extract that data to populate the table.
                     Foliage does not collect any private information (e.g. image metadata). If one day we decided to do so, we will first ask you for your permission.
                     </p>

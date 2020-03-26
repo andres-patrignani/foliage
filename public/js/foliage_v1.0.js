@@ -82,7 +82,7 @@ function setup() {
     // Upload button
     btnUploadLabel = document.getElementById('btnUploadLabel');
 
-    btnUpload = createFileInput(gotFile,'multiple');
+    btnUpload = createFileInput(gotFile, 'multiple');
     btnUpload.parent('btnUploadLabel');
     btnUpload.style('display','none');
     btnUpload.elt.disabled = true;
@@ -164,7 +164,18 @@ function gotFile(file) {
             let altitudeCellId = 'altitude-cell' + imgCounter;
 
             // Create table row
-            let tableRow = createElement('tr','<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + '<td '+ 'id="' + imgOriginalCellId + '"' +'></td>'+'<td '+ 'id="' + imgClassifiedCellId + '"' +'></td>' + '<td class="is-hidden-mobile" '+ 'id="' + vegetationTypeCellId + '"' + '>' + '</td>' + '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' + '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>').parent('resultsTable');    
+            let tableRow = createElement('tr',  '<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + 
+                                                '<td '+ 'id="' + imgOriginalCellId + '"' + '></td>' +
+                                                '<td '+ 'id="' + imgClassifiedCellId + '"' + '></td>' + 
+                                                '<td class="is-hidden-mobile" '+ 'id="' + vegetationTypeCellId + '"' + '></td>' +
+                                                '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' +
+                                                '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + 
+                                                '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + 
+                                                '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + 
+                                                '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>')
+                                                .parent('resultsTable');    
+            
+            
             //let tableRow = createElement('tr','<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + '<td '+ 'id="' + imgOriginalCellId + '"' +'></td>'+'<td '+ 'id="' + imgClassifiedCellId + '"' +'></td>' + '<td class="is-hidden-mobile">' + '<textarea class="textarea" rows="1" id="' + vegetationTypeCellId + '"' + '></textarea>' + '</td>' + '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' + '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>').parent('resultsTable');    
             //testcell.parentElement.parentElement.cells[0].innerText
 
@@ -345,12 +356,31 @@ function gotFile(file) {
             // Add original and classified images to ZIP file
             originals.file(file.name + '.jpg', dataURItoBlob(imgOriginal.canvas.toDataURL('image/jpeg')), {base64: true});
             classified.file(file.name + '.jpg', dataURItoBlob(imgClassified.canvas.toDataURL('image/jpeg')), {base64: true});
+
+            // Save to dropbox
+            uploadDropbox(file.name, dataURItoBlob(imgOriginal.canvas.toDataURL('image/jpeg')) );
         });
     }
-    setTimeout(function(){}, 100);
-
+    setTimeout(function(){console.log('Done')}, 0);
 }
 
+function uploadDropbox(imgName,img){
+    const url =  "https://content.dropboxapi.com/2/files/upload";
+    const opts = {
+
+    headers: {
+        "Authorization": "Bearer sl.ASrwGbFQzymceluejw6YVJxZTqWjjxnoWM5Jd4rvYzL54-RqTd8oNvRR4UjZYmVI6W98kiBoLrAZqhExGY_mm9tE6GlCfh1OF7uSbTRUed4gWm9oqkgqPFJw7lfMhGtkpAVV_9a1",
+        "Content-Type": "application/octet-stream",
+        "Dropbox-API-Arg": "{\"path\":\"/Apps/Foliage/test/" + imgName + "\"}"
+        },
+    body: img,
+    method: 'POST'  
+    };
+    fetch(url, opts)
+    .then(data=>{return data.json()})
+    .then(res=>{console.log(res)})
+    .catch(error=>console.log(error))
+}
 
 function deleteTable(){
     containerTable.remove();

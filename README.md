@@ -31,7 +31,7 @@ Foliage is an open-source web-based application aimed at people that need to qua
 
 This project would not be possible without the following projects and libraries:
 
-* (FileSaver.JS)[https://www.npmjs.com/package/file-saver/v/1.3.2]
-* (JSZip.js)[https://stuk.github.io/jszip/]
-* (p5.js)[https://p5js.org/]
-* (Bulma modern CSS framework)[https://bulma.io/]
+* [FileSaver.JS](https://www.npmjs.com/package/file-saver/v/1.3.2)
+* [JSZip.js](https://stuk.github.io/jszip/)
+* [p5.js](https://p5js.org/)
+* [Bulma modern CSS framework](https://bulma.io/)
