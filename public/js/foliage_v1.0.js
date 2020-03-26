@@ -164,15 +164,15 @@ function gotFile(file) {
             let altitudeCellId = 'altitude-cell' + imgCounter;
 
             // Create table row
-            let tableRow = createElement('tr',  '<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + 
-                                                '<td '+ 'id="' + imgOriginalCellId + '"' + '></td>' +
-                                                '<td '+ 'id="' + imgClassifiedCellId + '"' + '></td>' + 
-                                                '<td class="is-hidden-mobile" '+ 'id="' + vegetationTypeCellId + '"' + '></td>' +
-                                                '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' +
-                                                '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + 
-                                                '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + 
-                                                '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + 
-                                                '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>')
+            let tableRow = createElement('tr',  '<td ' + 'id="' + imgCounterCellId + '"' + '></td>' + 
+                                                '<td ' + 'id="' + imgOriginalCellId + '"' + '></td>' +
+                                                '<td ' + 'id="' + imgClassifiedCellId + '"' + '></td>' + 
+                                                '<td class="is-hidden-mobile" ' + 'id="' + vegetationTypeCellId + '"' + '></td>' +
+                                                '<td class="is-hidden-mobile" ' + 'id="' + filenameCellId + '"' + '></td>' +
+                                                '<td ' + 'id="' + canopyCoverCellId + '"' + '></td>' + 
+                                                '<td ' + 'id="' + latitudeCellId + '"' + '></td>' + 
+                                                '<td ' + 'id="' + longitudeCellId + '"' + '></td>' + 
+                                                '<td class="is-hidden-mobile" ' + 'id="' + altitudeCellId + '"' + '></td>')
                                                 .parent('resultsTable');    
             
             
