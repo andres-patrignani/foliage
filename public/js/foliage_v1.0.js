@@ -19,26 +19,22 @@ var btnUploadLabel;
 var heroBanner;
 var progressBar;
 
-var realtimeLatitude;
+var geoPreference;
 var latitude;
 var latArray;
 var latRef;
 
-var realtimeLongitude;
 var longitude;
 var lonArray;
 var lonRef;
 
-var realtimeAltitude;
 var altitude;
 var altitudeRef;
 
-var country;
-var state;
-var region;
+var snapDate;
+var uploadDate;
 
 var vegetationType;
-var dateTime;
 
 var imgOriginalsRef;
 var imgClassifiedRef;
@@ -124,6 +120,7 @@ function setup() {
     // Hide results table
     containerTable = document.getElementById('containerTable');
     containerTable.style.display = 'none';
+
 }
 
 function gotFile(file) {
@@ -136,10 +133,6 @@ function gotFile(file) {
 
             // Update progress bar
             progressBar.value = str(round(imgCounter/btnUpload.elt.files.length*100));
-
-
-            // Get geographic coordinates
-            getLocation()
 
             // Make results table visible
             if (imgCounter === 1){
@@ -173,11 +166,7 @@ function gotFile(file) {
                                                 '<td ' + 'id="' + latitudeCellId + '"' + '></td>' + 
                                                 '<td ' + 'id="' + longitudeCellId + '"' + '></td>' + 
                                                 '<td class="is-hidden-mobile" ' + 'id="' + altitudeCellId + '"' + '></td>')
-                                                .parent('resultsTable');    
-            
-            
-            //let tableRow = createElement('tr','<td '+ 'id="' + imgCounterCellId + '"' + '></td>' + '<td '+ 'id="' + imgOriginalCellId + '"' +'></td>'+'<td '+ 'id="' + imgClassifiedCellId + '"' +'></td>' + '<td class="is-hidden-mobile">' + '<textarea class="textarea" rows="1" id="' + vegetationTypeCellId + '"' + '></textarea>' + '</td>' + '<td class="is-hidden-mobile" '+ 'id="' + filenameCellId + '"' + '></td>' + '<td '+ 'id="' + canopyCoverCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + latitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" ' + 'id="' + longitudeCellId + '"' + '></td>' + '<td class="is-hidden-mobile" '+ 'id="' + altitudeCellId + '"' + '></td>').parent('resultsTable');    
-            //testcell.parentElement.parentElement.cells[0].innerText
+                                                .parent('resultsTable');
 
             // Get upload timestamp
             uploadDate = new Date();
@@ -247,14 +236,17 @@ function gotFile(file) {
                 // console.log(JSON.stringify(allMetaData, null, "\t"));
                 snapDate = EXIF.getTag(this, "DateTime");
                 latArray = EXIF.getTag(this, "GPSLatitude");
-                latRef = EXIF.getTag(this, "GPSLatitudeRef")
                 lonArray = EXIF.getTag(this, "GPSLongitude");
-                lonRef = EXIF.getTag(this, "GPSLongitudeRef");
                 altitude = EXIF.getTag(this, "GPSAltitude");
+                latRef = EXIF.getTag(this, "GPSLatitudeRef");
+                lonRef = EXIF.getTag(this, "GPSLongitudeRef");
                 altitudeRef = EXIF.getTag(this, "GPSAltitudeRef");
             });
 
-            
+            latitude = degreeToDecimal(latArray[0],latArray[1],latArray[2], latRef);
+            longitude = degreeToDecimal(lonArray[0],lonArray[1],lonArray[2], lonRef);
+            altitude = altitudeToMeters(altitude, altitudeRef);
+
             // Check EXIF dateTime
             if (typeof snapDate === 'undefined'){
                 snapDate = null;
@@ -263,71 +255,31 @@ function gotFile(file) {
             // Check EXIF latitude
             if (typeof latArray === 'undefined'){
                 latitude = null;
-            } else {
-                latitude = degreeToDecimal(latArray[0],latArray[1],latArray[2],latRef);
-            }
+            } 
 
             // Check EXIF longitude
             if (typeof lonArray === 'undefined'){
                 longitude = null;
-            } else {
-                longitude = degreeToDecimal(lonArray[0],lonArray[1],lonArray[2],lonRef);
-            }
+            } 
 
             // Check EXIF altitude
             if (typeof altitude === 'undefined' || altitude === null){
                 altitude = null;
-            } else {
-                altitude = altitudeToMeters(altitude, altitudeRef) ;
             }
-
-            // Replace any null values with realtime GPS data. Only replace if null to avoid overwriting
-            // EXIF data.
-            // Check real time latitude
-            // if (latitude === null){
-            //     latitude = realtimeLatitude;
-            // }
-
-            // Check real time latitude
-            // if (longitude === null){
-            //     longitude = realtimeLongitude;
-            // }
-            
-            // Check real time latitude
-            // if (altitude === null){
-            //     altitude = realtimeAltitude;
-            // }
+        
 
             // Update HTML table
-            // document.getElementById(imgCounterCellId).innerText = imgCounter;
-            // document.getElementById(vegetationTypeCellId).innerText = vegetationType;
-            // document.getElementById(filenameCellId).innerText = file.name;
-            // document.getElementById(canopyCoverCellId).innerText = percentCanopyCover;
+            document.getElementById(imgCounterCellId).innerText = imgCounter;
+            document.getElementById(vegetationTypeCellId).innerText = vegetationType;
+            document.getElementById(filenameCellId).innerText = file.name;
+            document.getElementById(canopyCoverCellId).innerText = percentCanopyCover;
+            document.getElementById(latitudeCellId).innerText = latitude;
+            document.getElementById(longitudeCellId).innerText = longitude;
+            document.getElementById(altitudeCellId).innerText = altitude;
+            // resultsTable.rows[imgCounter].cells[latitudeCellId].innerHTML = latitude;
+            // resultsTable.rows[imgCounter].cells[longitudeCellId].innerHTML = longitude;
+            // resultsTable.rows[imgCounter].cells[altitudeCellId].innerHTML = altitude;
 
-            resultsTable.rows[imgCounter].cells[imgCounterCellId].innerText = imgCounter;
-            resultsTable.rows[imgCounter].cells[vegetationTypeCellId].innerText = vegetationType;
-            resultsTable.rows[imgCounter].cells[filenameCellId].innerText = file.name;
-            resultsTable.rows[imgCounter].cells[canopyCoverCellId].innerText = percentCanopyCover;
-
-            if(latitude === null){
-                resultsTable.rows[imgCounter].cells[latitudeCellId].innerHTML = 'Unknown';
-            } else {
-                resultsTable.rows[imgCounter].cells[latitudeCellId].innerHTML = latitude;
-            }
-
-            if(longitude === null){
-                resultsTable.rows[imgCounter].cells[longitudeCellId].innerHTML = 'Unknown';
-            } else {
-                resultsTable.rows[imgCounter].cells[longitudeCellId].innerHTML = longitude;
-            }
-
-            if(altitude === null){
-                resultsTable.rows[imgCounter].cells[altitudeCellId].innerHTML = 'Unknown';
-            } else {
-                resultsTable.rows[imgCounter].cells[altitudeCellId].innerHTML = altitude;
-            }
-
-            
             // Append to output table
             var newRow = table.addRow();
             newRow.set('name', file.name);
@@ -357,30 +309,10 @@ function gotFile(file) {
             originals.file(file.name + '.jpg', dataURItoBlob(imgOriginal.canvas.toDataURL('image/jpeg')), {base64: true});
             classified.file(file.name + '.jpg', dataURItoBlob(imgClassified.canvas.toDataURL('image/jpeg')), {base64: true});
 
-            // Save to dropbox
-            uploadDropbox(file.name, dataURItoBlob(imgOriginal.canvas.toDataURL('image/jpeg')) );
         });
     }
-    setTimeout(function(){console.log('Done')}, 0);
 }
 
-function uploadDropbox(imgName,img){
-    const url =  "https://content.dropboxapi.com/2/files/upload";
-    const opts = {
-
-    headers: {
-        "Authorization": "Bearer sl.ASrwGbFQzymceluejw6YVJxZTqWjjxnoWM5Jd4rvYzL54-RqTd8oNvRR4UjZYmVI6W98kiBoLrAZqhExGY_mm9tE6GlCfh1OF7uSbTRUed4gWm9oqkgqPFJw7lfMhGtkpAVV_9a1",
-        "Content-Type": "application/octet-stream",
-        "Dropbox-API-Arg": "{\"path\":\"/Apps/Foliage/test/" + imgName + "\"}"
-        },
-    body: img,
-    method: 'POST'  
-    };
-    fetch(url, opts)
-    .then(data=>{return data.json()})
-    .then(res=>{console.log(res)})
-    .catch(error=>console.log(error))
-}
 
 function deleteTable(){
     containerTable.remove();
@@ -440,75 +372,6 @@ function getVegetationType(){
             //document.getElementById('vegetationTypeRequireMsg').innerHTML = 'Required field';
         }
     }
-}
-
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(realtimePosition);
-    } else {
-        realtimeLatitude = null;
-        realtimeLongitude = null;
-        realtimeAltitude = null;
-        country = null;
-        state = null;
-        region = null;
-        console.log('Navigator not available')
-    }
-}
-
-function realtimePosition(position) {
-   realtimeLatitude =  position.coords.latitude;
-   realtimeLongitude = position.coords.longitude; 
-   realtimeAltitude = position.coords.altitude;
-}
-
-function getLocationInitial(){
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(realtimePositionInitial);
-    }
-}
-
-function realtimePositionInitial(position) {
-    getAddress(position.coords.latitude, position.coords.longitude)
-}
-
-getLocationInitial()
-
-
-function getAddress(lat,lon) {
-    var url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + lat + '&' + 'lon=' + lon;
-
-    fetch(url)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(jsonData) {
-            //console.log(JSON.stringify(jsonData));
-
-            // Country
-            if ('country' in jsonData.address){
-                country = jsonData.address.country;
-            } else {
-                country = null;
-            }
-        
-            // State
-            if ('state' in jsonData.address){
-                state = jsonData.address.state;
-            } else {
-                state = null;
-            }
-        
-            // Region (this entry is not the same for different parts of the world)
-            if ('state_district' in jsonData.address){
-                region = jsonData.address.state_district;
-            } else if ('county' in jsonData.address) {
-                region = jsonData.address.county;
-            } else {
-                region = null;
-            }
-            console.log(country)
-        });
 }
 
 
