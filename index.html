@@ -137,65 +137,80 @@
                 <section class="modal-card-body">
 
                     <p>
-                        Foliage is a light-weight web-application for analyzing green canopy cover.
+                        
                     </p>
                     <br/>
                     <p>
-                        Foliage is a spin-off from the Canopeo application and uses the same algorithm to classify green canopy cover, but Foliage serves a different purpose and audience.
-                        Foliage gives end users the possibility to analyze batches of digital images without the need for downloading and installing software or signing in for a new account.
-                        This means that anyone can start analyzing images right away and that end users always have access to the latest version of Foliage web-app.
+                        Foliage is a light-weight web-application for analyzing green canopy cover for a batch of digital images. 
+                        Foliage is a spin-off from the Canopeo application and uses the same algorithm to classify green canopy cover.
+                        Foliage does not require installing any software or signing in for a new account.
                     </p>
 
                     <br/>
+                    <br/>
 
-                    <h3 class="subtitle">Feedback</h3>
+
+                    <h3 class="subtitle has-text-weight-bold">Feedback</h3>
                     <p> 
-                        For making feature requests and reporting errors, please open an issue in the <a href="https://github.com/andres-patrignani/foliage" >Github repository</a>
-                    </p>
-                    <br/>
-                    <p>
+                        For making feature requests and reporting errors, please open an issue in the <a href="https://github.com/andres-patrignani/foliage" target="_blank">Github repository</a>.
                         For comments or discussion about research projects, please contact Andres Patrignani at: andrespatrignani@ksu.edu
                     </p>
                     <br/>
+                    <br/>
 
-                    <h3 class="subtitle">Privacy and image metadata</h3>
+                    <h3 class="subtitle has-text-weight-bold">Privacy and image metadata</h3>
                     <p>
-                    Foliage retrieves metadata already present in the uploaded images. This includes basic attributes such as 
-                    image name, image dimensions, image file size, and pixel colors. These attributes are used to populate the table and classify 
-                    the green canopy cover. More advanced attributes such as geographic coordinates are only accessed if they are available in the image metadata. 
+                    Foliage retrieves metadata already present in the uploaded images. This includes attributes such as 
+                    image name, image dimensions, image file size, pixel colors, timestamp, and geographic coordinates. 
+                    Geographic coordinates are only accessed if they are available in the image metadata. 
                     For instance, if you upload a picture that you took a month ago while having the GPS disabled, then Foliage will not have access to that 
-                    information and will populate the table field with a placeholder value "Unknown". If the uploaded images contain geo-referenced data, 
+                    information and will populate the table field with the "Unknown" placeholder value. If the uploaded images contain geo-referenced data, 
                     then Foliage will try to extract that data to populate the table.
                     Foliage does not collect any private information (e.g. image metadata). If one day we decided to do so, we will first ask you for your permission.
                     </p>
 
                     <br/>
+                    <br/>
 
-                    <h3 class="subtitle">License</h3>
+                    <h3 class="subtitle has-text-weight-bold">License</h3>
                     <p>Foliage is an open-source project under the MIT license and runs entirely in your web browser. All images and metadata
                         remain in your local device at all times.
                     </p>
 
                     <br/>
+                    <br/>
 
-                    <h3 class="subtitle">Citation example</h3>
+                    <h3 class="subtitle has-text-weight-bold">Image processing details</h3>
                     <p>
-                        Patrignani, A. and Ochsner, T.E., 2015. 
+                        Details of the image processing routine are described in Patrignani, A. and Ochsner, T.E., 2015. 
                         Canopeo: A powerful new tool for measuring fractional green canopy cover. 
-                        Agronomy Journal, 107(6), pp.2312-2320.
+                        Agronomy Journal, 107(6), pp.2312-2320 <a href="https://dl.sciencesocieties.org/publications/aj/abstracts/107/6/2312">Link</a>
                     </p>
 
                     <br/>
+                    <br/>
 
-                    <p>
-                        Find out more about how other people are using similar tools at
-                        <a href="https://scholar.google.com/scholar?cites=16734011246830097977&as_sdt=2005&sciodt=0,5&hl=en" target="_blank">
-                           this link
-                        </a>
-                    </p>
+                    <h3 class="subtitle has-text-weight-bold">External packages</h3>
+                        <a href="https://www.npmjs.com/package/file-saver/v/1.3.2">FileSaver.JS</a>
+                        <br/>
+                        <a href="https://stuk.github.io/jszip/">JSZip.js</a>
+                        <br/>
+                        <a href="https://p5js.org/">p5.js</a>
+                        <br/>
+                        <a href="https://bulma.io/">Bulma CSS framework</a>
+                        <br/>
+                        <a href="https://github.com/exif-js/exif-js">Exif.js</a>
+                        <br/>
+                        <a href="https://fontawesome.com/">Fontawesome</a>
+
+                
+
                 </section>
             </div>
         </div>
+
+       
+       
 
         <script src="public/js/FileSaver.js"></script>
         <script src="public/js/jszip.min.js"></script>
