@@ -1,7 +1,7 @@
 // Foliage v 1.0
 // Author: Andres Patrignani
 // Date created: 12-January-2020
-// Last updated: 14-January-2020
+// Last updated: 9-April-2020
 // Contact e-mail: andrespatrignani@ksu.edu
 
 let imgOriginal;
@@ -49,7 +49,7 @@ var fileNumber;
 
 function setup() {
     // Print software version
-    console.log('Running v1.0');
+    console.log('Running v1.0' );
 
     // Remove default p5 canvas
     noCanvas()
