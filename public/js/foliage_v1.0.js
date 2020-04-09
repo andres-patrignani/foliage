@@ -107,7 +107,7 @@ function setup() {
         zip.generateAsync({type:"blob"})
         .then(function(content) {
             //console.log(content)
-            saveAs(content, 'Foliage_images' + downloadTimestamp + '.zip');
+            saveAs(content, 'Foliage_images_' + downloadTimestamp + '.zip');
         });
     });
 
