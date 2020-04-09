@@ -7,7 +7,6 @@
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-
             gtag('config', 'UA-126565767-3');
         </script>
         <meta charset="utf-8">
@@ -18,8 +17,8 @@
         <link rel="stylesheet" href="public/css/custom.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     </head>
-    <body>
 
+    <body>
         <!-- Navbar -->
         <nav class="navbar is-light is-fixed-top">
             <div class="container">
@@ -132,13 +131,8 @@
                 <button class="delete" id="closeAboutModal" aria-label="close"></button>
                 </header>
                 <section class="modal-card-body">
-
                     <p>
-                        
-                    </p>
-                    <br/>
-                    <p>
-                        Foliage is a light-weight web-application for analyzing green canopy cover for a batch of digital images. 
+                        Foliage is a light-weight web application for analyzing green canopy cover from a batch of images. 
                         Foliage is a spin-off from the Canopeo application and uses the same algorithm to classify green canopy cover.
                         Foliage does not require installing any software or signing in for a new account.
                     </p>
@@ -146,32 +140,29 @@
                     <br/>
                     <br/>
 
-
                     <h3 class="subtitle has-text-weight-bold">Feedback</h3>
                     <p> 
                         For making feature requests and reporting errors, please open an issue in the <a href="https://github.com/andres-patrignani/foliage" target="_blank">Github repository</a>.
-                        For comments or discussion about research projects, please contact Andres Patrignani at: andrespatrignani@ksu.edu
+                        For other issues contact Andres Patrignani at: andrespatrignani@ksu.edu
                     </p>
                     <br/>
                     <br/>
 
                     <h3 class="subtitle has-text-weight-bold">Privacy and image metadata</h3>
                     <p>
-                    Foliage retrieves metadata already present in the uploaded images. This includes attributes such as 
-                    image name, image dimensions, image file size, pixel colors, timestamp, and geographic coordinates. 
-                    Geographic coordinates are only accessed if they are available in the image metadata. 
-                    For instance, if you upload a picture that you took a month ago while having the GPS disabled, then Foliage will not have access to that 
-                    information and will populate the table field with the "Unknown" placeholder value. If the uploaded images contain geo-referenced data, 
-                    then Foliage will try to extract that data to populate the table.
-                    Foliage does not collect any private information (e.g. image metadata). If one day we decided to do so, we will first ask you for your permission.
+                    Foliage retrieves metadata such as image name, image dimensions, timestamp, and geographic coordinates
+                    already present in the uploaded images. At this point Foliage does not make use of the current user location. 
+                    If the uploaded images don't contain geographic coordinates, Foliage outputs <i>null</i> values in the output table.
+                    Foliage does not collect any private user or image information. All images and metadata remain in your local device at all times.
+                    If one day we decided to do so, we will first ask for your permission.
                     </p>
 
                     <br/>
                     <br/>
 
                     <h3 class="subtitle has-text-weight-bold">License</h3>
-                    <p>Foliage is an open-source project under the MIT license and runs entirely in your web browser. All images and metadata
-                        remain in your local device at all times.
+                    <p>Foliage is an open-source project under the MIT license and runs entirely in your web browser. We only request that you acknowledge and
+                        properly cite our work.
                     </p>
 
                     <br/>
@@ -180,7 +171,10 @@
                     <h3 class="subtitle has-text-weight-bold">Reference</h3>
                     <a href="https://zenodo.org/badge/latestdoi/233376575"><img src="https://zenodo.org/badge/233376575.svg" alt="DOI"></a>
                     <br/>
-                    Andres Patrignani. (2020, April 4). andres-patrignani/foliage: Foliage (Version v1.0). Zenodo. http://doi.org/10.5281/zenodo.3740240
+                    <br/>
+                    <p>
+                       Andres Patrignani. (2020, April 4). andres-patrignani/foliage: Foliage (Version v1.0). Zenodo. http://doi.org/10.5281/zenodo.3740240
+                    </p>
 
                     <br/>
                     <br/>
@@ -196,26 +190,27 @@
                     <br/>
 
                     <h3 class="subtitle has-text-weight-bold">External packages</h3>
-                        <a href="https://www.npmjs.com/package/file-saver/v/1.3.2">FileSaver.JS</a>
-                        <br/>
-                        <a href="https://stuk.github.io/jszip/">JSZip.js</a>
-                        <br/>
-                        <a href="https://p5js.org/">p5.js</a>
-                        <br/>
-                        <a href="https://bulma.io/">Bulma CSS framework</a>
-                        <br/>
-                        <a href="https://github.com/exif-js/exif-js">Exif.js</a>
-                        <br/>
-                        <a href="https://fontawesome.com/">Fontawesome</a>
+                    <p>This tool wouldn't be possible without the following projects:</p>
+                    <br/>
+                    <a href="https://www.npmjs.com/package/file-saver/v/1.3.2">FileSaver.JS</a>
+                    <br/>
+                    <a href="https://stuk.github.io/jszip/">JSZip.js</a>
+                    <br/>
+                    <a href="https://p5js.org/">p5.js</a>
+                    <br/>
+                    <a href="https://bulma.io/">Bulma CSS framework</a>
+                    <br/>
+                    <a href="https://github.com/exif-js/exif-js">Exif.js</a>
+                    <br/>
+                    <a href="https://fontawesome.com/">Fontawesome</a>
 
-                
+                    <br/>
+                    <p style="margin-top:50px; color: lightslategray;"><i>Copyright Andres Patrignani 2020</i></p>
 
                 </section>
             </div>
         </div>
 
-       
-       
 
         <script src="public/js/FileSaver.js"></script>
         <script src="public/js/jszip.min.js"></script>
@@ -223,13 +218,6 @@
         <script src="public/js/foliage_v1.0.js"></script>
         <script src="public/libraries/p5/p5.min.js"></script>
         <script src="public/libraries/p5/addons/p5.dom.min.js"></script>
-        <script>
-                ((window.gitter = {}).chat = {}).options = {
-                  room: 'foliageapp/community',
-                  activationElement: '.forum',
-                };
-        </script>
-        <script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
 
         <script>
         (function() {
