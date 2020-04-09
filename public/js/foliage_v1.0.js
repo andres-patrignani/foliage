@@ -77,7 +77,6 @@ function setup() {
 
     // Upload button
     btnUploadLabel = document.getElementById('btnUploadLabel');
-
     btnUpload = createFileInput(gotFile, 'multiple');
     btnUpload.parent('btnUploadLabel');
     btnUpload.style('display','none');
@@ -97,7 +96,7 @@ function setup() {
     btnDownloadCSV = document.getElementById("btnDownloadCSV")
     btnDownloadCSV.style.visibility = 'hidden';
     btnDownloadCSV.addEventListener("click", function(){
-        saveTable(table, 'results_' + downloadTimestamp + '.csv'); // p5 Function
+        saveTable(table, 'Foliage_results_' + downloadTimestamp + '.csv'); // p5 Function
     });
 
     // Download Images button
@@ -107,9 +106,8 @@ function setup() {
         zip.file('data_' + downloadTimestamp + '.json', JSON.stringify(JSONdata))
         zip.generateAsync({type:"blob"})
         .then(function(content) {
-            // need FileSaver.js
             //console.log(content)
-            saveAs(content, 'Foliage_' + downloadTimestamp + '.zip');
+            saveAs(content, 'Foliage_images' + downloadTimestamp + '.zip');
         });
     });
 
@@ -147,8 +145,8 @@ function gotFile(file) {
 
             // Generate Id for table cells
             let imgCounterCellId = 'img-counter-cell' + imgCounter;
-            let imgOriginalCellId = 'img-original-cell' + imgCounter; //'img-container'+imgCounter;
-            let imgClassifiedCellId = 'img-classified-cell' + imgCounter; //'img-container'+imgCounter;
+            let imgOriginalCellId = 'img-original-cell' + imgCounter;
+            let imgClassifiedCellId = 'img-classified-cell' + imgCounter;
             let vegetationTypeCellId = 'vegetation-type-cell' + imgCounter;
             let filenameCellId = 'filename-cell' + imgCounter;
             let canopyCoverCellId = 'canopy-cover-cell' + imgCounter;
@@ -244,7 +242,6 @@ function gotFile(file) {
                 altitude = altitudeToMeters(EXIF.getTag(this, "GPSAltitude"), EXIF.getTag(this, "GPSAltitudeRef"));
             });
 
-
             // Update HTML table
             document.getElementById(imgCounterCellId).innerText = imgCounter;
             document.getElementById(vegetationTypeCellId).innerText = vegetationType;
@@ -253,9 +250,6 @@ function gotFile(file) {
             document.getElementById(latitudeCellId).innerText = latitude;
             document.getElementById(longitudeCellId).innerText = longitude;
             document.getElementById(altitudeCellId).innerText = altitude;
-            // resultsTable.rows[imgCounter].cells[latitudeCellId].innerHTML = latitude;
-            // resultsTable.rows[imgCounter].cells[longitudeCellId].innerHTML = longitude;
-            // resultsTable.rows[imgCounter].cells[altitudeCellId].innerHTML = altitude;
 
             // Append to output table
             var newRow = table.addRow();
@@ -277,15 +271,11 @@ function gotFile(file) {
                 altitude: altitude,
                 cover: percentCanopyCover,
                 vegetationType: vegetationType
-                //country: country,
-                //state: state,
-                //region: region
             });
             
             // Add original and classified images to ZIP file
             originals.file(file.name + '.jpg', dataURItoBlob(imgOriginal.canvas.toDataURL('image/jpeg')), {base64: true});
             classified.file(file.name + '.jpg', dataURItoBlob(imgClassified.canvas.toDataURL('image/jpeg')), {base64: true});
-
         });
     }
 }
@@ -380,5 +370,4 @@ openAboutModalBtn.addEventListener('click', function (){
 // When the user clicks on <span> (x), close the modal
 closeAboutModalBtn.addEventListener('click', function (){
     aboutModal.classList.remove('is-active')
-
 })
