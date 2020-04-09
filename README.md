@@ -2,6 +2,9 @@
 
 Web-based green canopy cover analysis tool. Version 1.0.
 
+[![DOI](https://zenodo.org/badge/233376575.svg)](https://zenodo.org/badge/latestdoi/233376575)
+
+
 Foliage is a light-weight web application aimed at people that need to quantify green canopy cover from downward-facing digital images.
 
 ## Features
