@@ -93,18 +93,18 @@ function setup() {
     progressBar = document.getElementById('progressBar');
 
     // Download CSV button
-    let downloadTimestamp = new Date();
+    let downloadTimestamp = new Date().toISOString();
     btnDownloadCSV = document.getElementById("btnDownloadCSV")
     btnDownloadCSV.style.visibility = 'hidden';
     btnDownloadCSV.addEventListener("click", function(){
-        saveTable(table, 'metadata_' + downloadTimestamp.getTime() + '.csv'); // p5 Function
+        saveTable(table, 'results_' + downloadTimestamp + '.csv'); // p5 Function
     });
 
     // Download Images button
     btnDownloadZIP = document.getElementById("btnDownloadZIP")
     btnDownloadZIP.style.visibility = 'hidden';
     btnDownloadZIP.addEventListener("click", function(){
-        zip.file('data_' + downloadTimestamp.getTime() + '.json', JSON.stringify(JSONdata))
+        zip.file('data_' + downloadTimestamp + '.json', JSON.stringify(JSONdata))
         zip.generateAsync({type:"blob"})
         .then(function(content) {
             // need FileSaver.js
@@ -126,7 +126,7 @@ function setup() {
 function gotFile(file) {
 
     if (file.type === 'image'){
-        loadImage(file.data,function(imgOriginal){
+        loadImage(file.data, function(imgOriginal){
 
             // Start counting images
             imgCounter += 1;
@@ -169,7 +169,7 @@ function gotFile(file) {
                                                 .parent('resultsTable');
 
             // Get upload timestamp
-            uploadDate = new Date();
+            uploadDate = new Date().toISOString();
             
             // Resize image so that the largest side has 1440 pixels
             if(imgOriginal.width >= imgOriginal.height){
@@ -234,39 +234,16 @@ function gotFile(file) {
             EXIF.getData(document.getElementById(imgOriginalId), function() {
                 // var allMetaData = EXIF.getAllTags(this);
                 // console.log(JSON.stringify(allMetaData, null, "\t"));
-                snapDate = EXIF.getTag(this, "DateTime");
-                latArray = EXIF.getTag(this, "GPSLatitude");
-                lonArray = EXIF.getTag(this, "GPSLongitude");
-                altitude = EXIF.getTag(this, "GPSAltitude");
-                latRef = EXIF.getTag(this, "GPSLatitudeRef");
-                lonRef = EXIF.getTag(this, "GPSLongitudeRef");
-                altitudeRef = EXIF.getTag(this, "GPSAltitudeRef");
+                if (typeof EXIF.getTag(this, "DateTime") === 'undefined'){
+                    snapDate = null;
+                } else {
+                    snapDate = EXIF.getTag(this, "DateTime");
+                }
+                latitude = degreeToDecimal(EXIF.getTag(this, "GPSLatitude"), EXIF.getTag(this, "GPSLatitudeRef"));
+                longitude = degreeToDecimal(EXIF.getTag(this, "GPSLongitude"), EXIF.getTag(this, "GPSLongitudeRef"));
+                altitude = altitudeToMeters(EXIF.getTag(this, "GPSAltitude"), EXIF.getTag(this, "GPSAltitudeRef"));
             });
 
-            latitude = degreeToDecimal(latArray[0],latArray[1],latArray[2], latRef);
-            longitude = degreeToDecimal(lonArray[0],lonArray[1],lonArray[2], lonRef);
-            altitude = altitudeToMeters(altitude, altitudeRef);
-
-            // Check EXIF dateTime
-            if (typeof snapDate === 'undefined'){
-                snapDate = null;
-            }
-
-            // Check EXIF latitude
-            if (typeof latArray === 'undefined'){
-                latitude = null;
-            } 
-
-            // Check EXIF longitude
-            if (typeof lonArray === 'undefined'){
-                longitude = null;
-            } 
-
-            // Check EXIF altitude
-            if (typeof altitude === 'undefined' || altitude === null){
-                altitude = null;
-            }
-        
 
             // Update HTML table
             document.getElementById(imgCounterCellId).innerText = imgCounter;
@@ -285,7 +262,7 @@ function gotFile(file) {
             newRow.set('name', file.name);
             newRow.set('vegetationType', vegetationType);
             newRow.set('snapDate', snapDate);
-            newRow.set('uploadDate', uploadDate.toString()); // For downloadable file write date on a human readable format
+            newRow.set('uploadDate', uploadDate);
             newRow.set('latitude', latitude);
             newRow.set('longitude', longitude);
             newRow.set('altitude', altitude);
@@ -294,7 +271,7 @@ function gotFile(file) {
             JSONdata.push({
                 name: file.name,
                 snapDate: snapDate,
-                uploadDate: uploadDate.getTime(),
+                uploadDate: uploadDate,
                 latitude: latitude,
                 longitude: longitude,
                 altitude: altitude,
@@ -321,21 +298,32 @@ function deleteTable(){
     location.reload(false)
 }
 
-
-function degreeToDecimal(D,M,S,ref) {
-    let decimal = Math.round( (D + M/60 + S/3600) * 1000000 )/ 1000000;
-    if (ref === 'W' || ref === 'S'){
-        decimal = decimal * -1;
+function degreeToDecimal(gps,ref) {
+    let decimal;
+    if (typeof gps === 'undefined'){
+        decimal = null;
+    } else {
+        let D = gps[0]
+        let M = gps[1]
+        let S = gps[2]
+        decimal = Math.round( (D + M/60 + S/3600) * 1000000 )/ 1000000;
+        if (ref === 'W' || ref === 'S'){
+            decimal = decimal * -1;
+        }
     }
     return decimal;
 }
 
-function altitudeToMeters(value, ref) {
+function altitudeToMeters(gps, ref) {
     let meters;
-    if(ref === 1){
-        value = value * -1;
+    if (typeof gps === 'undefined'){
+        meters = null;
+    } else {
+        meters = Math.round(gps);
+        if(ref === 1){
+            meters = meters * -1; // 0 is above sea level and 1 is below sea level.
+        }
     }
-    meters = Math.round(value);
     return meters;
 }
 
