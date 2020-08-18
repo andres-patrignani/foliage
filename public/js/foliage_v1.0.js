@@ -72,6 +72,9 @@ function setup() {
         table.addColumn('longitude');
         table.addColumn('altitude');
         table.addColumn('canopyCover');
+        table.addColumn('RGratio');
+        table.addColumn('BGratio');
+        table.addColumn('ExG');
     }
     initializeTable()
 
@@ -182,8 +185,10 @@ function gotFile(file) {
             imgClassified.loadPixels();
         
             // Classify image following manuscript settings
-            let RGratio = 0.95;
-            let RBratio = 0.95;
+            let RGratio = float(document.getElementById('rg-ratio').value);
+            let BGratio = float(document.getElementById('bg-ratio').value);
+            let ExG = float(document.getElementById('exg').value);
+
             let canopyCover = 0;
             for(let y=0; y < imgClassified.height; y++){
                 for(let x=0; x < imgClassified.width; x++){
@@ -193,7 +198,7 @@ function gotFile(file) {
                     let G = float(imgOriginal.pixels[index+1]);
                     let B = float(imgOriginal.pixels[index+2]);
                 
-                    if (R/G < RGratio && B/G < RBratio && 2*G-R-B>20){
+                    if (R/G < RGratio && B/G < BGratio && 2*G-R-B > ExG){
                         imgClassified.pixels[index+0] = 255;
                         imgClassified.pixels[index+1] = 255;
                         imgClassified.pixels[index+2] = 255;
@@ -261,6 +266,9 @@ function gotFile(file) {
             newRow.set('longitude', longitude);
             newRow.set('altitude', altitude);
             newRow.set('canopyCover', percentCanopyCover);
+            newRow.set('RGratio', RGratio);
+            newRow.set('BGratio', BGratio);
+            newRow.set('ExG', ExG);
 
             JSONdata.push({
                 name: file.name,
@@ -270,7 +278,10 @@ function gotFile(file) {
                 longitude: longitude,
                 altitude: altitude,
                 cover: percentCanopyCover,
-                vegetationType: vegetationType
+                vegetationType: vegetationType,
+                RGratio: RGratio,
+                BGratio: RGratio,
+                ExG: ExG
             });
             
             // Add original and classified images to ZIP file
@@ -353,7 +364,7 @@ function getVegetationType(){
 }
 
 
-// Get the modal
+// Get the about modal
 var aboutModal = document.getElementById("aboutModal");
 
 // Get the button that opens the modal
@@ -370,4 +381,24 @@ openAboutModalBtn.addEventListener('click', function (){
 // When the user clicks on <span> (x), close the modal
 closeAboutModalBtn.addEventListener('click', function (){
     aboutModal.classList.remove('is-active')
+})
+
+
+// Get the settings modal
+var settingsModal = document.getElementById("settingsModal");
+
+// Get the button that opens the modal
+var openSettingsModalBtn = document.getElementById('openSettingsModalBtn');
+
+// Get the <span> element that closes the modal
+var closeSettingsModalBtn = document.getElementById('closeSettingsModal');
+
+// When the user clicks on the button, open the modal
+openSettingsModalBtn.addEventListener('click', function (){
+    settingsModal.classList.add('is-active')
+})
+
+// When the user clicks on <span> (x), close the modal
+closeSettingsModalBtn.addEventListener('click', function (){
+    settingsModal.classList.remove('is-active')
 })

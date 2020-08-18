@@ -64,6 +64,9 @@
                             <a class="navbar-item" href="https://github.com/andres-patrignani/foliage" target="_blank">
                                 <span class="icon"><i class="fab fa-github"></i></span><span>Github</span>
                             </a>
+                            <a class="navbar-item" id="openSettingsModalBtn">
+                                <span class="icon"><i class="fas fa-cog"></i></span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -205,6 +208,26 @@
 
                 </section>
             </div>
+        </div>
+
+        <!-- Settings modal -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <div style="margin:5px;">
+                    <label for="setting-ratio" style="color:white;">Red to Green Ratio</label>
+                    <input class="input" type="number" id="rg-ratio" min="0.5" max="1.1" step="0.05" value="0.95" placeholder="0.95">
+                </div>
+                <div style="margin:5px;">
+                    <label for="setting-ratio" style="color:white;">Blue to Green Ratio</label>
+                    <input class="input" type="number" id="bg-ratio" min="0.5" max="1.1" step="0.05" value="0.95" placeholder="0.95">
+                </div>
+                <div style="margin:5px;">
+                    <label for="setting-ratio" style="color:white;">Minimum Excess Green</label>
+                    <input class="input" type="number" id="exg" min="0" max="50" step="5" value="20" placeholder="20">
+                </div>
+            </div>
+            <button class="modal-close is-large" id="closeSettingsModal" aria-label="close"></button>
         </div>
 
 
